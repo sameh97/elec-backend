@@ -1,0 +1,22 @@
+{
+  "name": "elec-backend",
+  "version": "1.0.0",
+  "description": "final project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sameh97/elec-backend.git"
+  },
+  "author": "sameh hassoun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sameh97/elec-backend/issues"
+  },
+  "homepage": "https://github.com/sameh97/elec-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
