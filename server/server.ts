@@ -1,11 +1,17 @@
 import express = require("express");
 import { inject } from "inversify";
 import { AppDBConnection } from "../config/database";
+import { UsersApi } from "../routes/user-api";
+
+const path = require("path");
 
 export class ElectronicsApp {
   private app: express.Express;
 
-  constructor(@inject(AppDBConnection) private dBconnection: AppDBConnection) {
+  constructor(
+    @inject(AppDBConnection) private dBconnection: AppDBConnection,
+    @inject(UsersApi) private usersApi: UsersApi
+  ) {
     this.app = express();
     this.app.use(express.json());
     this.app.use(function (req, res, next) {
@@ -21,6 +27,7 @@ export class ElectronicsApp {
   }
 
   public async start(): Promise<void> {
+    this.initRoutes();
     this.initDB();
     this.listenToRequests();
   }
@@ -34,6 +41,15 @@ export class ElectronicsApp {
       .catch((e) => {
         console.log(e);
       });
+  }
+
+  private initRoutes(): void {
+    this.app.use("/api", this.usersApi.getRouter());
+
+    // Catch all other get requests
+    this.app.get("/*", (req, res) => {
+      res.sendFile(path.join(__dirname, "/public/index.html"));
+    });
   }
 
   private listenToRequests(): void {

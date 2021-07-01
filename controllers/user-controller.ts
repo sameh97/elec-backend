@@ -2,7 +2,7 @@ import { inject, injectable } from "inversify";
 import { UserService } from "../services/user-service";
 import { User } from "../common/interfaces/user";
 import { UserDtoMapper } from "../common/dto-mappers/user-dto-mapper";
-import { Logger } from "./../common/logger";
+import { Logger } from "../common/logger";
 import { AppUtils } from "../common/app-utils";
 
 @injectable()
