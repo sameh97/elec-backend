@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 import { injectable } from "inversify";
-import { Mongoose } from "mongoose";
 
 @injectable()
 export class AppDBConnection {

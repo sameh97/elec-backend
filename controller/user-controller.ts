@@ -1,0 +1,51 @@
+import { inject, injectable } from "inversify";
+import { UserService } from "../services/user-service";
+import { User } from "../common/interfaces/user";
+import { UserDtoMapper } from "../common/dto-mappers/user-dto-mapper";
+import { Logger } from "./../common/logger";
+import { AppUtils } from "../common/app-utils";
+
+@injectable()
+export class UserController {
+  constructor(
+    @inject(UserService) private userService: UserService,
+    @inject(UserDtoMapper) private dtoMapper: UserDtoMapper,
+    @inject(Logger) private logger: Logger
+  ) {}
+
+  public login = async (req: any, res: any, next: any) => {
+    let userFromBody: User = null;
+    try {
+      userFromBody = req.body;
+
+      const user: User = await this.userService.login(
+        userFromBody.email,
+        userFromBody.password
+      );
+
+      res.send({});
+    } catch (e) {
+      const email = AppUtils.hasValue(userFromBody) ? userFromBody.email : "";
+      this.logger.error(`Cannot login user: ${email}`, e);
+      next(e);
+    }
+  };
+
+  public createUser = async (req: any, res: any, next: any) => {
+    let userToCreate: User = null;
+    try {
+      userToCreate = this.dtoMapper.asEntity(req.body);
+
+      const createdUser: User = await this.userService.create(userToCreate);
+
+      res.status(201);
+      next(this.dtoMapper.asDto(createdUser));
+    } catch (err) {
+      this.logger.error(
+        `Cannot create user: ${JSON.stringify(userToCreate)}`,
+        err
+      );
+      next(err);
+    }
+  };
+}
