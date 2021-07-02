@@ -21,7 +21,7 @@ const inversify_1 = require("inversify");
 let AppDBConnection = class AppDBConnection {
     connect() {
         return __awaiter(this, void 0, void 0, function* () {
-            const mongoDB = "mongodb://127.0.0.1/store";
+            const mongoDB = "mongodb://127.0.0.1/elec-store";
             mongoose.connect(mongoDB, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,

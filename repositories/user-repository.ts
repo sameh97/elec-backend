@@ -10,8 +10,8 @@ export class UsersRepository {
   public async save(user: User): Promise<User> {
     let userInDB: User = null;
 
-    await UserModel.find({ email: user.email }, (err, data) => {
-      userInDB = data;
+    await UserModel.findOne({ email: user.email }, (err, user) => {
+      userInDB = user;
     });
 
     if (AppUtils.hasValue(userInDB)) {
@@ -20,11 +20,19 @@ export class UsersRepository {
       );
     }
 
-    let createdUser: User = null;
-
-    await UserModel.create(user, (error, data) => {
-      createdUser = data;
+    const createdUser = new UserModel({
+      name: user.name,
+      email: user.email,
+      password: user.password,
     });
+
+    await createdUser.save();
+
+    // let createdUser: User = null;
+
+    // await UserModel.create(user, (error, data) => {
+    //   createdUser = data;
+    // });
 
     return createdUser;
   }
@@ -33,8 +41,8 @@ export class UsersRepository {
   public async getByEmail(email: string): Promise<User> {
     let userInDB: User = null;
 
-    await UserModel.find({ email: email }, (err, data) => {
-      userInDB = data;
+    await UserModel.findOne({ email: email }, (err, user) => {
+      userInDB = user;
     });
 
     if (!AppUtils.hasValue(userInDB)) {

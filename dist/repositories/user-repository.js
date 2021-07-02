@@ -25,24 +25,26 @@ let UsersRepository = class UsersRepository {
     save(user) {
         return __awaiter(this, void 0, void 0, function* () {
             let userInDB = null;
-            yield UserModel.find({ email: user.email }, (err, data) => {
-                userInDB = data;
+            yield UserModel.findOne({ email: user.email }, (err, user) => {
+                userInDB = user;
             });
             if (app_utils_1.AppUtils.hasValue(userInDB)) {
                 throw new already_exist_error_1.AlreadyExistError(`User with mail '${user.email}' already exist`);
             }
-            let createdUser = null;
-            yield UserModel.create(user, (error, data) => {
-                createdUser = data;
+            const createdUser = new UserModel({
+                name: user.name,
+                email: user.email,
+                password: user.password,
             });
+            yield createdUser.save();
             return createdUser;
         });
     }
     getByEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
             let userInDB = null;
-            yield UserModel.find({ email: email }, (err, data) => {
-                userInDB = data;
+            yield UserModel.findOne({ email: email }, (err, user) => {
+                userInDB = user;
             });
             if (!app_utils_1.AppUtils.hasValue(userInDB)) {
                 throw new not_found_error_1.NotFoundErr(`User with mail ${email} does not exist`);

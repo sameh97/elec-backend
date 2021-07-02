@@ -6,7 +6,7 @@ export class AppDBConnection {
   private db: any;
 
   async connect(): Promise<void> {
-    const mongoDB = "mongodb://127.0.0.1/store";
+    const mongoDB = "mongodb://127.0.0.1/elec-store";
 
     mongoose.connect(mongoDB, {
       useNewUrlParser: true,
