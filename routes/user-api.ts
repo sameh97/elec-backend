@@ -3,7 +3,6 @@ import { injectable, inject } from "inversify";
 import { AppRoute } from "../common/interfaces/app-route";
 import { UserController } from "../controllers/user-controller";
 
-// TODO: use this
 @injectable()
 export class UsersApi implements AppRoute {
   private router: Router;
