@@ -83,6 +83,7 @@ export class ProductsRepository {
 
     return updatedProduct;
   };
+
   // TODO: check how to bring the id:
   public delete = async (id: string) => {
     let toDelete: Product = null;

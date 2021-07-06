@@ -26,4 +26,3 @@ export class ProductsApi implements AppRoute {
     this.router.delete("/delete/:id", this.productsController.delete);
   }
 }
-
