@@ -15,7 +15,7 @@ let ProductDtoMapper = class ProductDtoMapper {
             return null;
         }
         return {
-            id: product.id,
+            _id: product._id,
             name: product.name,
             description: product.description,
             quantity: product.quantity,
@@ -28,7 +28,7 @@ let ProductDtoMapper = class ProductDtoMapper {
             return null;
         }
         return {
-            id: productDto.id,
+            _id: productDto._id,
             name: productDto.name,
             description: productDto.description,
             quantity: productDto.quantity,

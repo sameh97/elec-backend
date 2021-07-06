@@ -26,7 +26,6 @@ const inversify_1 = require("inversify");
 const app_utils_1 = require("../common/app-utils");
 const logger_1 = require("../common/logger");
 const database_1 = require("../config/database");
-const input_error_1 = require("../exeptions/input-error");
 const product_repository_1 = require("../repositories/product-repository");
 let ProductsService = class ProductsService {
     constructor(logger, productRepo, appDBConnection) {
@@ -36,7 +35,7 @@ let ProductsService = class ProductsService {
         this.create = (product) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const createdProduct = yield this.productRepo.save(product);
-                this.logger.info(`created product with id ${createdProduct.id}`);
+                this.logger.info(`created product with id ${createdProduct._id}`);
                 return createdProduct;
             }
             catch (err) {
@@ -52,7 +51,7 @@ let ProductsService = class ProductsService {
         this.update = (product) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const updatedProduct = yield this.productRepo.update(product);
-                this.logger.info(`updated product with id ${updatedProduct.id}`);
+                this.logger.info(`updated product with id ${updatedProduct._id}`);
                 return updatedProduct;
             }
             catch (err) {
@@ -61,9 +60,6 @@ let ProductsService = class ProductsService {
             }
         });
         this.delete = (id) => __awaiter(this, void 0, void 0, function* () {
-            if (!app_utils_1.AppUtils.isInteger(id)) {
-                throw new input_error_1.InputError(`Cannot delete product, the id must be an integer`);
-            }
             try {
                 this.logger.info(`Deleting product with id: ${id}`);
                 yield this.productRepo.delete(id);

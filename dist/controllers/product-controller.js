@@ -71,7 +71,7 @@ let ProductsController = class ProductsController {
         this.delete = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             let productId = null;
             try {
-                productId = Number(req.params.id);
+                productId = req.params.id;
                 yield this.productsService.delete(productId);
                 next(`product with id ${productId} has been deleted successfully`);
             }

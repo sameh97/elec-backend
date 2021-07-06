@@ -18,7 +18,7 @@ export class ProductsService {
     try {
       const createdProduct = await this.productRepo.save(product);
 
-      this.logger.info(`created product with id ${createdProduct.id}`);
+      this.logger.info(`created product with id ${createdProduct._id}`);
 
       return createdProduct;
     } catch (err) {
@@ -41,7 +41,7 @@ export class ProductsService {
     try {
       const updatedProduct = await this.productRepo.update(product);
 
-      this.logger.info(`updated product with id ${updatedProduct.id}`);
+      this.logger.info(`updated product with id ${updatedProduct._id}`);
 
       return updatedProduct;
     } catch (err) {
@@ -54,10 +54,10 @@ export class ProductsService {
     }
   };
 
-  public delete = async (id: number): Promise<void> => {
-    if (!AppUtils.isInteger(id)) {
-      throw new InputError(`Cannot delete product, the id must be an integer`);
-    }
+  public delete = async (id: string): Promise<void> => {
+    // if (!AppUtils.isInteger(id)) {
+    //   throw new InputError(`Cannot delete product, the id must be an integer`);
+    // }
 
     try {
       this.logger.info(`Deleting product with id: ${id}`);

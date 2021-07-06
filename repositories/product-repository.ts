@@ -16,13 +16,13 @@ export class ProductsRepository {
     await ProductModel.findOne(
       { serialNumber: product.serialNumber },
       (err, product) => {
-        productInDB = product;
+        productInDB = product as Product;
       }
     );
 
     if (AppUtils.hasValue(productInDB)) {
       throw new AlreadyExistError(
-        `Product with name '${product.name}' already exist`
+        `Product with serial number '${product.serialNumber}' already exist`
       );
     }
 
@@ -42,8 +42,8 @@ export class ProductsRepository {
   public async getAll(): Promise<Product[]> {
     let allProducts: Product[] = [];
 
-    await ProductModel.findAll((err, productsFromDB) => {
-      allProducts = productsFromDB;
+    await ProductModel.find({}, (err, data) => {
+      allProducts = data as Product[];
     });
 
     return allProducts;
@@ -52,12 +52,9 @@ export class ProductsRepository {
   public update = async (product: Product): Promise<Product> => {
     let productInDB: Product = null;
 
-    await ProductModel.findOne(
-      { serialNumber: product.serialNumber },
-      (err, product) => {
-        productInDB = product;
-      }
-    );
+    await ProductModel.findOne({ _id: product._id }, (err, product) => {
+      productInDB = product;
+    });
 
     if (!AppUtils.hasValue(productInDB)) {
       throw new NotFoundErr(
@@ -69,14 +66,15 @@ export class ProductsRepository {
 
     let updatedProduct: Product = null;
 
-    ProductModel.findByIdAndUpdate(
-      product.id,
+    await ProductModel.findByIdAndUpdate(
+      product._id,
       product,
+      { new: true },
       (err, updatedProductInDB) => {
         if (err) {
           this.logger.error(err);
         } else {
-          updatedProduct = updatedProductInDB;
+          updatedProduct = updatedProductInDB as Product;
         }
       }
     );
@@ -86,7 +84,7 @@ export class ProductsRepository {
     return updatedProduct;
   };
   // TODO: check how to bring the id:
-  public delete = async (id: number) => {
+  public delete = async (id: string) => {
     let toDelete: Product = null;
 
     await ProductModel.findOne({ _id: id }, (err, product) => {
@@ -99,7 +97,7 @@ export class ProductsRepository {
       );
     }
 
-    ProductModel.findByIdAndRemove(id, (err, removedProduct) => {
+    await ProductModel.findByIdAndRemove(id, (err, removedProduct) => {
       if (err) {
         this.logger.error(err);
       } else {

@@ -33,7 +33,7 @@ let ProductsRepository = class ProductsRepository {
         this.logger = logger;
         this.update = (product) => __awaiter(this, void 0, void 0, function* () {
             let productInDB = null;
-            yield ProductModel.findOne({ _id: product.id }, (err, product) => {
+            yield ProductModel.findOne({ _id: product._id }, (err, product) => {
                 productInDB = product;
             });
             if (!app_utils_1.AppUtils.hasValue(productInDB)) {
@@ -41,7 +41,7 @@ let ProductsRepository = class ProductsRepository {
             }
             this.logger.info(`Updating product with name ${productInDB.name}`);
             let updatedProduct = null;
-            ProductModel.findByIdAndUpdate(product.id, product, (err, updatedProductInDB) => {
+            yield ProductModel.findByIdAndUpdate(product._id, product, { new: true }, (err, updatedProductInDB) => {
                 if (err) {
                     this.logger.error(err);
                 }
@@ -60,7 +60,7 @@ let ProductsRepository = class ProductsRepository {
             if (!app_utils_1.AppUtils.hasValue(toDelete)) {
                 throw new not_found_error_1.NotFoundErr(`Cannot delete Product with id ${id} because its not found`);
             }
-            ProductModel.findByIdAndRemove(id, (err, removedProduct) => {
+            yield ProductModel.findByIdAndRemove(id, (err, removedProduct) => {
                 if (err) {
                     this.logger.error(err);
                 }
@@ -73,14 +73,13 @@ let ProductsRepository = class ProductsRepository {
     save(product) {
         return __awaiter(this, void 0, void 0, function* () {
             let productInDB = null;
-            yield ProductModel.findOne({ name: product.name }, (err, product) => {
+            yield ProductModel.findOne({ serialNumber: product.serialNumber }, (err, product) => {
                 productInDB = product;
             });
             if (app_utils_1.AppUtils.hasValue(productInDB)) {
-                throw new already_exist_error_1.AlreadyExistError(`Product with name '${product.name}' already exist`);
+                throw new already_exist_error_1.AlreadyExistError(`Product with serial number '${product.serialNumber}' already exist`);
             }
             const createdProduct = new ProductModel({
-                id: null,
                 name: product.name,
                 description: product.description,
                 quantity: product.quantity,
@@ -88,15 +87,14 @@ let ProductsRepository = class ProductsRepository {
                 serialNumber: product.serialNumber,
             });
             yield createdProduct.save();
-            createdProduct.id = createdProduct._id;
             return createdProduct;
         });
     }
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
             let allProducts = [];
-            yield ProductModel.findAll((err, productsFromDB) => {
-                allProducts = productsFromDB;
+            yield ProductModel.find({}, (err, data) => {
+                allProducts = data;
             });
             return allProducts;
         });
