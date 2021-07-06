@@ -1,6 +1,7 @@
 import express = require("express");
 import { inject } from "inversify";
 import { AppDBConnection } from "../config/database";
+import { ProductsApi } from "../routes/product-api";
 import { UsersApi } from "../routes/user-api";
 
 const path = require("path");
@@ -10,7 +11,8 @@ export class ElectronicsApp {
 
   constructor(
     @inject(AppDBConnection) private dBconnection: AppDBConnection,
-    @inject(UsersApi) private usersApi: UsersApi
+    @inject(UsersApi) private usersApi: UsersApi,
+    @inject(ProductsApi) private productsApi: ProductsApi
   ) {
     this.app = express();
     this.app.use(express.json());
@@ -45,6 +47,7 @@ export class ElectronicsApp {
 
   private initRoutes(): void {
     this.app.use("/api", this.usersApi.getRouter());
+    this.app.use("/api", this.productsApi.getRouter());
 
     // Catch all other get requests
     this.app.get("/*", (req, res) => {

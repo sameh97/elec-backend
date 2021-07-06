@@ -25,12 +25,14 @@ exports.ElectronicsApp = void 0;
 const express = require("express");
 const inversify_1 = require("inversify");
 const database_1 = require("../config/database");
+const product_api_1 = require("../routes/product-api");
 const user_api_1 = require("../routes/user-api");
 const path = require("path");
 let ElectronicsApp = class ElectronicsApp {
-    constructor(dBconnection, usersApi) {
+    constructor(dBconnection, usersApi, productsApi) {
         this.dBconnection = dBconnection;
         this.usersApi = usersApi;
+        this.productsApi = productsApi;
         this.app = express();
         this.app.use(express.json());
         this.app.use(function (req, res, next) {
@@ -62,6 +64,7 @@ let ElectronicsApp = class ElectronicsApp {
     }
     initRoutes() {
         this.app.use("/api", this.usersApi.getRouter());
+        this.app.use("/api", this.productsApi.getRouter());
         this.app.get("/*", (req, res) => {
             res.sendFile(path.join(__dirname, "/public/index.html"));
         });
@@ -78,8 +81,10 @@ let ElectronicsApp = class ElectronicsApp {
 ElectronicsApp = __decorate([
     __param(0, inversify_1.inject(database_1.AppDBConnection)),
     __param(1, inversify_1.inject(user_api_1.UsersApi)),
+    __param(2, inversify_1.inject(product_api_1.ProductsApi)),
     __metadata("design:paramtypes", [database_1.AppDBConnection,
-        user_api_1.UsersApi])
+        user_api_1.UsersApi,
+        product_api_1.ProductsApi])
 ], ElectronicsApp);
 exports.ElectronicsApp = ElectronicsApp;
 //# sourceMappingURL=server.js.map
