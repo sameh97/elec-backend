@@ -85,6 +85,8 @@ let ProductsRepository = class ProductsRepository {
                 quantity: product.quantity,
                 categoryID: product.categoryID,
                 serialNumber: product.serialNumber,
+                price: product.price,
+                imgUrl: product.imgUrl,
             });
             yield createdProduct.save();
             return createdProduct;

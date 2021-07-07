@@ -32,6 +32,8 @@ export class ProductsRepository {
       quantity: product.quantity,
       categoryID: product.categoryID,
       serialNumber: product.serialNumber,
+      price: product.price,
+      imgUrl: product.imgUrl,
     });
 
     await createdProduct.save();

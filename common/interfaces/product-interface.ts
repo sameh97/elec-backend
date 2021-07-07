@@ -5,4 +5,6 @@ export interface Product {
   quantity: number;
   categoryID: number;
   serialNumber: string;
+  price: number;
+  imgUrl: string;
 }

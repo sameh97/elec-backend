@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import { ProductDtoMapper } from "../common/dto-mappers/product-dto-mapper";
 import { Logger } from "../common/logger";
-import { ProductDto } from "../common/interfaces/product-dto";
+import { ProductDto } from "../common/interfaces/dto/product-dto";
 import { Product } from "../common/interfaces/product-interface";
 import { ProductsService } from "../services/product-service";
 
