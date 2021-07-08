@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { Cart } from "../common/interfaces/cart-interface";
 
 import { CartItem } from "../common/interfaces/cart-item-interface";
 
@@ -18,11 +19,13 @@ const cartItemSchema = new Schema<CartItem>(
 
 const CartSchema = new Schema(
   {
+    userID: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     items: [cartItemSchema],
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
-module.exports = model<CartItem>("Cart", CartSchema);
+module.exports = model<Cart>("Cart", CartSchema);
