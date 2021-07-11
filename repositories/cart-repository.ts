@@ -2,15 +2,17 @@ import { AlreadyExistError } from "./../exeptions/already-exist-error";
 import { inject, injectable } from "inversify";
 import { AppUtils } from "../common/app-utils";
 import { NotFoundErr } from "../exeptions/not-found-error";
-import { Product } from "../common/interfaces/product-interface";
 import { Logger } from "../common/logger";
 import { Cart } from "../common/interfaces/cart-interface";
 import { CartItem } from "../common/interfaces/cart-item-interface";
+import { CartDtoMapper } from "../common/dto-mappers/cart-dto-mapper";
 const CartModel = require("./../models/cart");
 
 @injectable()
 export class CartRepository {
-  constructor(@inject(Logger) private logger: Logger) {}
+  constructor(
+    @inject(Logger) private logger: Logger // @inject(CartDtoMapper) private cartDtoMapper: CartDtoMapper
+  ) {}
 
   public async add(cartItem: CartItem, userID: string): Promise<Cart> {
     let cartInDB = null;
@@ -21,13 +23,13 @@ export class CartRepository {
 
     if (AppUtils.hasValue(cartInDB)) {
       const index = cartInDB.items.findIndex(
-        (item) => item.productID === cartItem.productID
+        (item) => item.product._id.toString() === cartItem.product._id
       );
 
       if (index !== -1) {
         cartInDB.items[index].quantity =
           cartInDB.items[index].quantity + cartItem.quantity;
-        cartInDB.items[index].productID = cartItem.productID;
+        cartInDB.items[index].product._id = cartItem.product._id;
 
         const cartAfterAdding = await cartInDB.save();
 
@@ -44,7 +46,7 @@ export class CartRepository {
       const itemsArray: CartItem[] = [];
       itemsArray.push(cartItem);
 
-      const createdCart = new CartModel({
+      let createdCart = new CartModel({
         userID: userID,
         items: itemsArray,
       });
@@ -53,6 +55,16 @@ export class CartRepository {
 
       return createdCart;
     }
+  }
+
+  public async getCartByUserId(user_id: string): Promise<Cart> {
+    let cart: Cart = null;
+
+    await CartModel.find({ userID: user_id }, (err, data) => {
+      cart = data as Cart;
+    });
+
+    return cart;
   }
 
   // public async getAll(): Promise<Product[]> {

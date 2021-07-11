@@ -25,7 +25,7 @@ export class CartService {
 
       return createdCart;
     } catch (err) {
-      this.logger.error(`cannot add to cart `);
+      this.logger.error(`cannot add to cart ${AppUtils.getFullException(err)}`);
     }
   };
 

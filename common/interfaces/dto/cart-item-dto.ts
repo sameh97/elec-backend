@@ -1,5 +1,7 @@
+import { Product } from "../product-interface";
+
 export interface CartItemDto {
   _id: string;
-  productID: string;
+  product: Product;
   quantity: string;
 }

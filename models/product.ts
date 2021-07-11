@@ -12,4 +12,4 @@ const productSchema = new Schema<Product>({
   imgUrl: { type: String, required: true },
 });
 
-module.exports = model<Product>("Product", productSchema);
+module.exports = [model<Product>("Product", productSchema), productSchema];

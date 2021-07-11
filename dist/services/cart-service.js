@@ -23,6 +23,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartService = void 0;
 const inversify_1 = require("inversify");
+const app_utils_1 = require("../common/app-utils");
 const logger_1 = require("../common/logger");
 const database_1 = require("../config/database");
 const cart_repository_1 = require("../repositories/cart-repository");
@@ -38,7 +39,7 @@ let CartService = class CartService {
                 return createdCart;
             }
             catch (err) {
-                this.logger.error(`cannot add to cart `);
+                this.logger.error(`cannot add to cart ${app_utils_1.AppUtils.getFullException(err)}`);
             }
         });
     }

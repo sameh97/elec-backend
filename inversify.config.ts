@@ -1,4 +1,5 @@
 import { Container } from "inversify";
+import { CartDtoMapper } from "./common/dto-mappers/cart-dto-mapper";
 import { ProductDtoMapper } from "./common/dto-mappers/product-dto-mapper";
 import { UserDtoMapper } from "./common/dto-mappers/user-dto-mapper";
 import { Logger } from "./common/logger";
@@ -38,6 +39,6 @@ container.bind<CartController>(CartController).toSelf();
 container.bind<CartService>(CartService).toSelf();
 container.bind<CartRepository>(CartRepository).toSelf();
 container.bind<CartApi>(CartApi).toSelf();
-
+container.bind<CartDtoMapper>(CartDtoMapper).toSelf();
 
 export default container;

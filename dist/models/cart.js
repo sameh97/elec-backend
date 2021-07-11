@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
+const productSchema = require("./product")[1];
 const cartItemSchema = new mongoose_1.Schema({
-    productID: { type: String, required: true, unique: true },
+    product: productSchema,
     quantity: {
         type: Number,
         required: true,

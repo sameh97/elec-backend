@@ -10,5 +10,5 @@ const productSchema = new mongoose_1.Schema({
     price: { type: Number, required: true },
     imgUrl: { type: String, required: true },
 });
-module.exports = mongoose_1.model("Product", productSchema);
+module.exports = [mongoose_1.model("Product", productSchema), productSchema];
 //# sourceMappingURL=product.js.map

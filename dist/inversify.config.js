@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const inversify_1 = require("inversify");
+const cart_dto_mapper_1 = require("./common/dto-mappers/cart-dto-mapper");
 const product_dto_mapper_1 = require("./common/dto-mappers/product-dto-mapper");
 const user_dto_mapper_1 = require("./common/dto-mappers/user-dto-mapper");
 const logger_1 = require("./common/logger");
@@ -36,5 +37,6 @@ container.bind(cart_controller_1.CartController).toSelf();
 container.bind(cart_service_1.CartService).toSelf();
 container.bind(cart_repository_1.CartRepository).toSelf();
 container.bind(cart_api_1.CartApi).toSelf();
+container.bind(cart_dto_mapper_1.CartDtoMapper).toSelf();
 exports.default = container;
 //# sourceMappingURL=inversify.config.js.map
