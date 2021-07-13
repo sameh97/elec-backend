@@ -18,11 +18,12 @@ export class UserController {
     try {
       userFromBody = req.body;
 
-      const user: User = await this.userService.login(
+      const token: string = await this.userService.login(
         userFromBody.email,
         userFromBody.password
       );
 
+      res.setHeader("Authorization", token);
       res.send({});
     } catch (e) {
       const email = AppUtils.hasValue(userFromBody) ? userFromBody.email : "";

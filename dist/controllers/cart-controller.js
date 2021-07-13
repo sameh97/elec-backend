@@ -23,17 +23,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartController = void 0;
 const inversify_1 = require("inversify");
-const product_dto_mapper_1 = require("../common/dto-mappers/product-dto-mapper");
 const logger_1 = require("../common/logger");
 const cart_service_1 = require("../services/cart-service");
+const cart_dto_mapper_1 = require("../common/dto-mappers/cart-dto-mapper");
 let CartController = class CartController {
-    constructor(cartService, productDtoMapper, logger) {
+    constructor(cartService, cartDtoMapper, logger) {
         this.cartService = cartService;
-        this.productDtoMapper = productDtoMapper;
+        this.cartDtoMapper = cartDtoMapper;
         this.logger = logger;
+        this.getCartByUserId = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const cart = yield this.cartService.getCartById(req.query.user_id);
+                const cartDto = this.cartDtoMapper.asDto(cart);
+                next(cartDto);
+            }
+            catch (err) {
+                this.logger.error(`cannot get cart`, err);
+                next(err);
+            }
+        });
         this.addToCart = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             const item = req.body;
-            const userId = req.params.user_id;
+            const userId = req.query.user_id;
             let itemToAdd = null;
             try {
                 itemToAdd = item;
@@ -51,10 +62,10 @@ let CartController = class CartController {
 CartController = __decorate([
     inversify_1.injectable(),
     __param(0, inversify_1.inject(cart_service_1.CartService)),
-    __param(1, inversify_1.inject(product_dto_mapper_1.ProductDtoMapper)),
+    __param(1, inversify_1.inject(cart_dto_mapper_1.CartDtoMapper)),
     __param(2, inversify_1.inject(logger_1.Logger)),
     __metadata("design:paramtypes", [cart_service_1.CartService,
-        product_dto_mapper_1.ProductDtoMapper,
+        cart_dto_mapper_1.CartDtoMapper,
         logger_1.Logger])
 ], CartController);
 exports.CartController = CartController;

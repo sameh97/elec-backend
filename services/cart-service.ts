@@ -29,11 +29,17 @@ export class CartService {
     }
   };
 
-  //   public getAll = async (): Promise<Product[]> => {
-  //     const products: Product[] = await this.productRepo.getAll();
-  //     this.logger.info(`Returning ${products.length} products`);
-  //     return products;
-  //   };
+  public getCartById = async (user_id: string): Promise<Cart> => {
+    const cart: Cart = await this.cartRepository.getCartByUserId(user_id);
+    // this.logger.info(`Returning cart with id ${cart._id} `);
+    return cart;
+  };
+
+  // public getAll = async (): Promise<Product[]> => {
+  //   const products: Product[] = await this.productRepo.getAll();
+  //   this.logger.info(`Returning ${products.length} products`);
+  //   return products;
+  // };
 
   //   public update = async (product: Product): Promise<Product> => {
   //     try {

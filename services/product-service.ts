@@ -37,6 +37,12 @@ export class ProductsService {
     return products;
   };
 
+  public getById = async (id: string): Promise<Product> => {
+    const product: Product = await this.productRepo.getProductById(id);
+    this.logger.info(`Returning product with id ${product._id}`);
+    return product;
+  };
+
   public update = async (product: Product): Promise<Product> => {
     try {
       const updatedProduct = await this.productRepo.update(product);

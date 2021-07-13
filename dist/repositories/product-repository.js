@@ -27,7 +27,7 @@ const inversify_1 = require("inversify");
 const app_utils_1 = require("../common/app-utils");
 const not_found_error_1 = require("../exeptions/not-found-error");
 const logger_1 = require("../common/logger");
-const ProductModel = require("./../models/product");
+const ProductModel = require("./../models/product")[0];
 let ProductsRepository = class ProductsRepository {
     constructor(logger) {
         this.logger = logger;
@@ -84,6 +84,7 @@ let ProductsRepository = class ProductsRepository {
                 description: product.description,
                 quantity: product.quantity,
                 categoryID: product.categoryID,
+                status: product.status,
                 serialNumber: product.serialNumber,
                 price: product.price,
                 imgUrl: product.imgUrl,
@@ -99,6 +100,15 @@ let ProductsRepository = class ProductsRepository {
                 allProducts = data;
             });
             return allProducts;
+        });
+    }
+    getProductById(productID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let product;
+            yield ProductModel.findOne({ _id: productID }, (err, data) => {
+                product = data;
+            });
+            return product;
         });
     }
 };

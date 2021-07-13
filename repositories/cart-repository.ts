@@ -23,13 +23,13 @@ export class CartRepository {
 
     if (AppUtils.hasValue(cartInDB)) {
       const index = cartInDB.items.findIndex(
-        (item) => item.product._id.toString() === cartItem.product._id
+        (item) => item.productID === cartItem.productID
       );
 
       if (index !== -1) {
         cartInDB.items[index].quantity =
           cartInDB.items[index].quantity + cartItem.quantity;
-        cartInDB.items[index].product._id = cartItem.product._id;
+        // cartInDB.items[index].product._id = cartItem.product._id;
 
         const cartAfterAdding = await cartInDB.save();
 
@@ -60,7 +60,7 @@ export class CartRepository {
   public async getCartByUserId(user_id: string): Promise<Cart> {
     let cart: Cart = null;
 
-    await CartModel.find({ userID: user_id }, (err, data) => {
+    await CartModel.findOne({ userID: user_id }, (err, data) => {
       cart = data as Cart;
     });
 

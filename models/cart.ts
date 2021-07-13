@@ -3,13 +3,13 @@ import { Cart } from "../common/interfaces/cart-interface";
 
 import { CartItem } from "../common/interfaces/cart-item-interface";
 
-const productSchema = require("./product")[1];
+// const productSchema = require("./product")[1];
 
 // const Product = require("./../common/interfaces/product-interface");
 
 const cartItemSchema = new Schema<CartItem>(
   {
-    product: productSchema,
+    productID: { type: String, required: true },
     quantity: {
       type: Number,
       required: true,

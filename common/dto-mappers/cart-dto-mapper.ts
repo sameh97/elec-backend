@@ -1,29 +1,61 @@
 import { AppUtils } from "../app-utils";
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { CartDto } from "../interfaces/dto/cart-dto";
 import { Cart } from "../interfaces/cart-interface";
+import { Product } from "../interfaces/product-interface";
+import { ProductsService } from "../../services/product-service";
+import { CartItemDto } from "../interfaces/dto/cart-item-dto";
 
 @injectable()
 export class CartDtoMapper {
+  constructor(
+    @inject(ProductsService) private productsService: ProductsService
+  ) {}
   public asDto(cart: Cart): CartDto {
     if (!AppUtils.hasValue(cart)) {
       return null;
     }
+
+    console.log(cart);
+
+    let cartItems: CartItemDto[] = [];
+
+    cart.items.forEach(async (item) => {
+      const product: Product = await this.productsService.getById(
+        item.productID
+      );
+
+      // const cartItemToSave = (): CartItemDto => ({
+      //   _id: item._id,
+      //   product: product,
+      //   quantity: item.quantity,
+      // });
+
+      const cartItemToSave: CartItemDto = {
+        _id: item._id,
+        product: product,
+        quantity: item.quantity,
+      } as CartItemDto;
+
+      cartItems.push(cartItemToSave);
+    });
+
     return {
       _id: cart._id,
-      items: cart.items,
+      items: cartItems,
       userID: cart.userID,
     } as CartDto;
   }
 
-  public asEntity(cartDto: CartDto): Cart {
-    if (!AppUtils.hasValue(cartDto)) {
-      return null;
-    }
-    return {
-      _id: cartDto._id,
-      items: cartDto.items,
-      userID: cartDto.userID,
-    } as Cart;
-  }
+  // public asEntity(cartDto: CartDto): Cart {
+  //   if (!AppUtils.hasValue(cartDto)) {
+  //     return null;
+  //   }
+
+  //   return {
+  //     _id: cartDto._id,
+  //     items: cartDto.items,
+  //     userID: cartDto.userID,
+  //   } as Cart;
+  // }
 }

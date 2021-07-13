@@ -42,6 +42,10 @@ let CartService = class CartService {
                 this.logger.error(`cannot add to cart ${app_utils_1.AppUtils.getFullException(err)}`);
             }
         });
+        this.getCartById = (user_id) => __awaiter(this, void 0, void 0, function* () {
+            const cart = yield this.cartRepository.getCartByUserId(user_id);
+            return cart;
+        });
     }
 };
 CartService = __decorate([

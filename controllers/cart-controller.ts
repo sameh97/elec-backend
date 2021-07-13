@@ -7,12 +7,14 @@ import { ProductsService } from "../services/product-service";
 import { Cart } from "../common/interfaces/cart-interface";
 import { CartService } from "../services/cart-service";
 import { CartItem } from "../common/interfaces/cart-item-interface";
+import { CartDto } from "../common/interfaces/dto/cart-dto";
+import { CartDtoMapper } from "../common/dto-mappers/cart-dto-mapper";
 
 @injectable()
 export class CartController {
   constructor(
     @inject(CartService) private cartService: CartService,
-    @inject(ProductDtoMapper) private productDtoMapper: ProductDtoMapper,
+    @inject(CartDtoMapper) private cartDtoMapper: CartDtoMapper,
     @inject(Logger) private logger: Logger
   ) {}
 
@@ -31,10 +33,23 @@ export class CartController {
   //     }
   //   };
 
+  public getCartByUserId = async (req: any, res: any, next: any) => {
+    try {
+      const cart: Cart = await this.cartService.getCartById(req.query.user_id);
+
+      const cartDto: CartDto = this.cartDtoMapper.asDto(cart);
+
+      next(cartDto);
+    } catch (err) {
+      this.logger.error(`cannot get cart`, err);
+      next(err);
+    }
+  };
+
   public addToCart = async (req: any, res: any, next: any) => {
     const item = req.body;
 
-    const userId = req.params.user_id;
+    const userId = req.query.user_id;
 
     let itemToAdd: CartItem = null;
     try {

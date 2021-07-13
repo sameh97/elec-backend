@@ -6,6 +6,7 @@ const productSchema = new mongoose_1.Schema({
     serialNumber: { type: String, required: true, unique: true },
     description: { type: String, required: true },
     quantity: { type: String, required: true },
+    status: { type: String, required: true },
     categoryID: { type: Number, required: true },
     price: { type: Number, required: true },
     imgUrl: { type: String, required: true },

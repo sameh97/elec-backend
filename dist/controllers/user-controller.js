@@ -36,7 +36,8 @@ let UserController = class UserController {
             let userFromBody = null;
             try {
                 userFromBody = req.body;
-                const user = yield this.userService.login(userFromBody.email, userFromBody.password);
+                const token = yield this.userService.login(userFromBody.email, userFromBody.password);
+                res.setHeader("Authorization", token);
                 res.send({});
             }
             catch (e) {

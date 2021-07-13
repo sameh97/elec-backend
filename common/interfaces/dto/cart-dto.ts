@@ -1,7 +1,7 @@
-import { CartItem } from "./../cart-item-interface";
+import { CartItemDto } from "./cart-item-dto";
 
 export interface CartDto {
   _id: string;
-  items: CartItem[];
+  items: CartItemDto[];
   userID: string;
 }

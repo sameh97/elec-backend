@@ -4,7 +4,7 @@ import { AppUtils } from "../common/app-utils";
 import { NotFoundErr } from "../exeptions/not-found-error";
 import { Product } from "../common/interfaces/product-interface";
 import { Logger } from "../common/logger";
-const ProductModel = require("./../models/product");
+const ProductModel = require("./../models/product")[0];
 
 @injectable()
 export class ProductsRepository {
@@ -31,6 +31,7 @@ export class ProductsRepository {
       description: product.description,
       quantity: product.quantity,
       categoryID: product.categoryID,
+      status: product.status,
       serialNumber: product.serialNumber,
       price: product.price,
       imgUrl: product.imgUrl,
@@ -49,6 +50,16 @@ export class ProductsRepository {
     });
 
     return allProducts;
+  }
+
+  public async getProductById(productID: string): Promise<Product> {
+    let product: Product;
+
+    await ProductModel.findOne({ _id: productID }, (err, data) => {
+      product = data as Product;
+    });
+
+    return product;
   }
 
   public update = async (product: Product): Promise<Product> => {

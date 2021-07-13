@@ -37,11 +37,10 @@ let CartRepository = class CartRepository {
                 cartInDB = cart;
             });
             if (app_utils_1.AppUtils.hasValue(cartInDB)) {
-                const index = cartInDB.items.findIndex((item) => item.product._id.toString() === cartItem.product._id);
+                const index = cartInDB.items.findIndex((item) => item.productID === cartItem.productID);
                 if (index !== -1) {
                     cartInDB.items[index].quantity =
                         cartInDB.items[index].quantity + cartItem.quantity;
-                    cartInDB.items[index].product._id = cartItem.product._id;
                     const cartAfterAdding = yield cartInDB.save();
                     return cartAfterAdding;
                 }
@@ -65,7 +64,7 @@ let CartRepository = class CartRepository {
     getCartByUserId(user_id) {
         return __awaiter(this, void 0, void 0, function* () {
             let cart = null;
-            yield CartModel.find({ userID: user_id }, (err, data) => {
+            yield CartModel.findOne({ userID: user_id }, (err, data) => {
                 cart = data;
             });
             return cart;

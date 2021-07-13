@@ -20,6 +20,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var UserService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const inversify_1 = require("inversify");
@@ -28,7 +29,8 @@ const user_repository_1 = require("../repositories/user-repository");
 const password_manager_service_1 = require("./password-manager-service");
 const database_1 = require("../config/database");
 const app_utils_1 = require("../common/app-utils");
-let UserService = class UserService {
+const jwt = require("jsonwebtoken");
+let UserService = UserService_1 = class UserService {
     constructor(usersRepository, passwordManager, appDBconnection) {
         this.usersRepository = usersRepository;
         this.passwordManager = passwordManager;
@@ -41,7 +43,10 @@ let UserService = class UserService {
             if (!isPasswordOk) {
                 throw new authentication_error_1.AuthenticationError(`User with ${email} not authenticated`);
             }
-            return userInDB;
+            const token = jwt.sign({
+                sub: userInDB,
+            }, UserService_1.TOKEN_SECRET, { expiresIn: `${UserService_1.TOKEN_EXPIRATION_HOURS}h` });
+            return token;
         });
     }
     create(user) {
@@ -61,7 +66,7 @@ let UserService = class UserService {
 };
 UserService.TOKEN_SECRET = "asfwsgvwregwegfrgfwg";
 UserService.TOKEN_EXPIRATION_HOURS = 240;
-UserService = __decorate([
+UserService = UserService_1 = __decorate([
     inversify_1.injectable(),
     __param(0, inversify_1.inject(user_repository_1.UsersRepository)),
     __param(1, inversify_1.inject(password_manager_service_1.PasswordManagerService)),

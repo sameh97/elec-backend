@@ -5,6 +5,7 @@ export interface ProductDto {
   quantity: number;
   categoryID: number;
   serialNumber: string;
+  status: string;
   imgUrl: String;
   price: Number;
 }
