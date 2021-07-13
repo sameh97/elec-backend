@@ -29,9 +29,7 @@ const CartModel = require("./../models/cart");
 let CartRepository = class CartRepository {
     constructor(logger) {
         this.logger = logger;
-    }
-    add(cartItem, userID) {
-        return __awaiter(this, void 0, void 0, function* () {
+        this.add = (cartItem, userID) => __awaiter(this, void 0, void 0, function* () {
             let cartInDB = null;
             yield CartModel.findOne({ userID: userID }, (err, cart) => {
                 cartInDB = cart;

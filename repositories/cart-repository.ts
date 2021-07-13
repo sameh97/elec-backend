@@ -14,7 +14,7 @@ export class CartRepository {
     @inject(Logger) private logger: Logger // @inject(CartDtoMapper) private cartDtoMapper: CartDtoMapper
   ) {}
 
-  public async add(cartItem: CartItem, userID: string): Promise<Cart> {
+  public add = async (cartItem: CartItem, userID: string): Promise<Cart> => {
     let cartInDB = null;
 
     await CartModel.findOne({ userID: userID }, (err, cart) => {
@@ -55,7 +55,7 @@ export class CartRepository {
 
       return createdCart;
     }
-  }
+  };
 
   public async getCartByUserId(user_id: string): Promise<Cart> {
     let cart: Cart = null;

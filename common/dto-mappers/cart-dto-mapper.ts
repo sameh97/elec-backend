@@ -11,6 +11,7 @@ export class CartDtoMapper {
   constructor(
     @inject(ProductsService) private productsService: ProductsService
   ) {}
+
   public asDto(cart: Cart): CartDto {
     if (!AppUtils.hasValue(cart)) {
       return null;
