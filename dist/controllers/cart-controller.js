@@ -34,7 +34,7 @@ let CartController = class CartController {
         this.getCartByUserId = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const cart = yield this.cartService.getCartById(req.query.user_id);
-                const cartDto = this.cartDtoMapper.asDto(cart);
+                const cartDto = yield this.cartDtoMapper.asDto(cart);
                 next(cartDto);
             }
             catch (err) {

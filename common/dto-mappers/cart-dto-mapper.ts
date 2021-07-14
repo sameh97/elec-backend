@@ -12,7 +12,7 @@ export class CartDtoMapper {
     @inject(ProductsService) private productsService: ProductsService
   ) {}
 
-  public asDto(cart: Cart): CartDto {
+  public async asDto(cart: Cart): Promise<CartDto> {
     if (!AppUtils.hasValue(cart)) {
       return null;
     }
@@ -21,17 +21,23 @@ export class CartDtoMapper {
 
     let cartItems: CartItemDto[] = [];
 
-    cart.items.forEach(async (item) => {
+    // await cart.items.forEach(async (item) => {
+    //   const product: Product = await this.productsService.getById(
+    //     item.productID
+    //   );
+    //   const cartItemToSave: CartItemDto = {
+    //     _id: item._id,
+    //     product: product,
+    //     quantity: item.quantity,
+    //   } as CartItemDto;
+
+    //   cartItems.push(cartItemToSave);
+    // });
+
+    for (let item of cart.items) {
       const product: Product = await this.productsService.getById(
         item.productID
       );
-
-      // const cartItemToSave = (): CartItemDto => ({
-      //   _id: item._id,
-      //   product: product,
-      //   quantity: item.quantity,
-      // });
-
       const cartItemToSave: CartItemDto = {
         _id: item._id,
         product: product,
@@ -39,7 +45,7 @@ export class CartDtoMapper {
       } as CartItemDto;
 
       cartItems.push(cartItemToSave);
-    });
+    }
 
     return {
       _id: cart._id,

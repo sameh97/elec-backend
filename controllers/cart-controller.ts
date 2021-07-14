@@ -37,7 +37,7 @@ export class CartController {
     try {
       const cart: Cart = await this.cartService.getCartById(req.query.user_id);
 
-      const cartDto: CartDto = this.cartDtoMapper.asDto(cart);
+      const cartDto: CartDto = await this.cartDtoMapper.asDto(cart);
 
       next(cartDto);
     } catch (err) {

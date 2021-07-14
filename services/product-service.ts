@@ -39,7 +39,9 @@ export class ProductsService {
 
   public getById = async (id: string): Promise<Product> => {
     const product: Product = await this.productRepo.getProductById(id);
-    this.logger.info(`Returning product with id ${product._id}`);
+    // this.logger.info(
+    //   `Returning product with serial number ${product.serialNumber}`
+    // );
     return product;
   };
 

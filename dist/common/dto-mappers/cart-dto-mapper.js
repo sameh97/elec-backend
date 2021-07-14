@@ -30,25 +30,27 @@ let CartDtoMapper = class CartDtoMapper {
         this.productsService = productsService;
     }
     asDto(cart) {
-        if (!app_utils_1.AppUtils.hasValue(cart)) {
-            return null;
-        }
-        console.log(cart);
-        let cartItems = [];
-        cart.items.forEach((item) => __awaiter(this, void 0, void 0, function* () {
-            const product = yield this.productsService.getById(item.productID);
-            const cartItemToSave = {
-                _id: item._id,
-                product: product,
-                quantity: item.quantity,
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!app_utils_1.AppUtils.hasValue(cart)) {
+                return null;
+            }
+            console.log(cart);
+            let cartItems = [];
+            for (let item of cart.items) {
+                const product = yield this.productsService.getById(item.productID);
+                const cartItemToSave = {
+                    _id: item._id,
+                    product: product,
+                    quantity: item.quantity,
+                };
+                cartItems.push(cartItemToSave);
+            }
+            return {
+                _id: cart._id,
+                items: cartItems,
+                userID: cart.userID,
             };
-            cartItems.push(cartItemToSave);
-        }));
-        return {
-            _id: cart._id,
-            items: cartItems,
-            userID: cart.userID,
-        };
+        });
     }
 };
 CartDtoMapper = __decorate([

@@ -50,7 +50,6 @@ let ProductsService = class ProductsService {
         });
         this.getById = (id) => __awaiter(this, void 0, void 0, function* () {
             const product = yield this.productRepo.getProductById(id);
-            this.logger.info(`Returning product with id ${product._id}`);
             return product;
         });
         this.update = (product) => __awaiter(this, void 0, void 0, function* () {
