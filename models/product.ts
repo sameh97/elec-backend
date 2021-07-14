@@ -3,13 +3,14 @@ import { Schema, model } from "mongoose";
 import { Product } from "./../common/interfaces/product-interface";
 
 const productSchema = new Schema<Product>({
-  id: { type: Number },
   name: { type: String, required: true },
-  serialNumber: { type: String, required: true, unique: true },
+  serialNumber: { type: String, required: true },
   description: { type: String, required: true },
+  quantity: { type: String, required: true },
+  status: { type: String, required: true },
   categoryID: { type: Number, required: true },
-  price: { type: Number },
-  imgUrl: { type: String },
+  price: { type: Number, required: true },
+  imgUrl: { type: String, required: true },
 });
 
-module.exports = model<Product>("Product", productSchema);
+module.exports = [model<Product>("Product", productSchema), productSchema];

@@ -19,8 +19,11 @@ let ProductDtoMapper = class ProductDtoMapper {
             name: product.name,
             description: product.description,
             quantity: product.quantity,
-            categoryID: product.quantity,
+            categoryID: product.categoryID,
+            status: product.status,
             serialNumber: product.serialNumber,
+            imgUrl: product.imgUrl,
+            price: product.price,
         };
     }
     asEntity(productDto) {
@@ -32,8 +35,11 @@ let ProductDtoMapper = class ProductDtoMapper {
             name: productDto.name,
             description: productDto.description,
             quantity: productDto.quantity,
-            categoryID: productDto.quantity,
+            categoryID: productDto.categoryID,
+            status: productDto.status,
             serialNumber: productDto.serialNumber,
+            imgUrl: productDto.imgUrl,
+            price: productDto.price,
         };
     }
 };

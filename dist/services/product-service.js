@@ -48,6 +48,10 @@ let ProductsService = class ProductsService {
             this.logger.info(`Returning ${products.length} products`);
             return products;
         });
+        this.getById = (id) => __awaiter(this, void 0, void 0, function* () {
+            const product = yield this.productRepo.getProductById(id);
+            return product;
+        });
         this.update = (product) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const updatedProduct = yield this.productRepo.update(product);

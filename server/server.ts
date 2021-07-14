@@ -1,6 +1,9 @@
 import express = require("express");
 import { inject } from "inversify";
 import { AppDBConnection } from "../config/database";
+import { appResponseHandler } from "../middlewares/app-response-handler";
+import { CartApi } from "../routes/cart-api";
+import { CategoryApi } from "../routes/category-api";
 import { ProductsApi } from "../routes/product-api";
 import { UsersApi } from "../routes/user-api";
 
@@ -12,7 +15,9 @@ export class ElectronicsApp {
   constructor(
     @inject(AppDBConnection) private dBconnection: AppDBConnection,
     @inject(UsersApi) private usersApi: UsersApi,
-    @inject(ProductsApi) private productsApi: ProductsApi
+    @inject(ProductsApi) private productsApi: ProductsApi,
+    @inject(CartApi) private cartApi: CartApi,
+    @inject(CategoryApi) private categoryApi: CategoryApi
   ) {
     this.app = express();
     this.app.use(express.json());
@@ -30,6 +35,7 @@ export class ElectronicsApp {
 
   public async start(): Promise<void> {
     this.initRoutes();
+    this.handleAllResponses();
     this.initDB();
     this.listenToRequests();
   }
@@ -48,10 +54,17 @@ export class ElectronicsApp {
   private initRoutes(): void {
     this.app.use("/api", this.usersApi.getRouter());
     this.app.use("/api", this.productsApi.getRouter());
+    this.app.use("/api", this.cartApi.getRouter());
+    this.app.use("/api", this.categoryApi.getRouter());
 
     // Catch all other get requests
+    const publicPath = express.static(path.join(__dirname, "./../elec"), {
+      redirect: false,
+    });
+
+    this.app.use(publicPath);
     this.app.get("/*", (req, res) => {
-      res.sendFile(path.join(__dirname, "/public/index.html"));
+      res.sendFile(path.join(__dirname, "./../elec/index.html"));
     });
   }
 
@@ -65,5 +78,9 @@ export class ElectronicsApp {
     server.listen(PORT, () => {
       console.log(`Server started on port ${PORT}`);
     });
+  }
+
+  private handleAllResponses(): void {
+    this.app.use(appResponseHandler);
   }
 }

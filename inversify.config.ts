@@ -1,14 +1,23 @@
 import { Container } from "inversify";
+import { CartDtoMapper } from "./common/dto-mappers/cart-dto-mapper";
 import { ProductDtoMapper } from "./common/dto-mappers/product-dto-mapper";
 import { UserDtoMapper } from "./common/dto-mappers/user-dto-mapper";
 import { Logger } from "./common/logger";
 import { AppDBConnection } from "./config/database";
+import { CartController } from "./controllers/cart-controller";
+import { CategoryController } from "./controllers/category-controller";
 import { ProductsController } from "./controllers/product-controller";
 import { UserController } from "./controllers/user-controller";
+import { CartRepository } from "./repositories/cart-repository";
+import { CategoryRepository } from "./repositories/category-repository";
 import { ProductsRepository } from "./repositories/product-repository";
 import { UsersRepository } from "./repositories/user-repository";
+import { CartApi } from "./routes/cart-api";
+import { CategoryApi } from "./routes/category-api";
 import { ProductsApi } from "./routes/product-api";
 import { UsersApi } from "./routes/user-api";
+import { CartService } from "./services/cart-service";
+import { CategoryService } from "./services/category-service";
 import { PasswordManagerService } from "./services/password-manager-service";
 import { ProductsService } from "./services/product-service";
 import { UserService } from "./services/user-service";
@@ -30,4 +39,14 @@ container.bind<ProductsService>(ProductsService).toSelf();
 container.bind<ProductsRepository>(ProductsRepository).toSelf();
 container.bind<ProductDtoMapper>(ProductDtoMapper).toSelf();
 
+container.bind<CartController>(CartController).toSelf();
+container.bind<CartService>(CartService).toSelf();
+container.bind<CartRepository>(CartRepository).toSelf();
+container.bind<CartApi>(CartApi).toSelf();
+container.bind<CartDtoMapper>(CartDtoMapper).toSelf();
+
+container.bind<CategoryRepository>(CategoryRepository).toSelf();
+container.bind<CategoryService>(CategoryService).toSelf();
+container.bind<CategoryController>(CategoryController).toSelf();
+container.bind<CategoryApi>(CategoryApi).toSelf();
 export default container;

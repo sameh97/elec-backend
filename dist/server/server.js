@@ -25,14 +25,19 @@ exports.ElectronicsApp = void 0;
 const express = require("express");
 const inversify_1 = require("inversify");
 const database_1 = require("../config/database");
+const app_response_handler_1 = require("../middlewares/app-response-handler");
+const cart_api_1 = require("../routes/cart-api");
+const category_api_1 = require("../routes/category-api");
 const product_api_1 = require("../routes/product-api");
 const user_api_1 = require("../routes/user-api");
 const path = require("path");
 let ElectronicsApp = class ElectronicsApp {
-    constructor(dBconnection, usersApi, productsApi) {
+    constructor(dBconnection, usersApi, productsApi, cartApi, categoryApi) {
         this.dBconnection = dBconnection;
         this.usersApi = usersApi;
         this.productsApi = productsApi;
+        this.cartApi = cartApi;
+        this.categoryApi = categoryApi;
         this.app = express();
         this.app.use(express.json());
         this.app.use(function (req, res, next) {
@@ -46,6 +51,7 @@ let ElectronicsApp = class ElectronicsApp {
     start() {
         return __awaiter(this, void 0, void 0, function* () {
             this.initRoutes();
+            this.handleAllResponses();
             this.initDB();
             this.listenToRequests();
         });
@@ -65,8 +71,14 @@ let ElectronicsApp = class ElectronicsApp {
     initRoutes() {
         this.app.use("/api", this.usersApi.getRouter());
         this.app.use("/api", this.productsApi.getRouter());
+        this.app.use("/api", this.cartApi.getRouter());
+        this.app.use("/api", this.categoryApi.getRouter());
+        const publicPath = express.static(path.join(__dirname, "./../elec"), {
+            redirect: false,
+        });
+        this.app.use(publicPath);
         this.app.get("/*", (req, res) => {
-            res.sendFile(path.join(__dirname, "/public/index.html"));
+            res.sendFile(path.join(__dirname, "./../elec/index.html"));
         });
     }
     listenToRequests() {
@@ -77,14 +89,21 @@ let ElectronicsApp = class ElectronicsApp {
             console.log(`Server started on port ${PORT}`);
         });
     }
+    handleAllResponses() {
+        this.app.use(app_response_handler_1.appResponseHandler);
+    }
 };
 ElectronicsApp = __decorate([
     __param(0, inversify_1.inject(database_1.AppDBConnection)),
     __param(1, inversify_1.inject(user_api_1.UsersApi)),
     __param(2, inversify_1.inject(product_api_1.ProductsApi)),
+    __param(3, inversify_1.inject(cart_api_1.CartApi)),
+    __param(4, inversify_1.inject(category_api_1.CategoryApi)),
     __metadata("design:paramtypes", [database_1.AppDBConnection,
         user_api_1.UsersApi,
-        product_api_1.ProductsApi])
+        product_api_1.ProductsApi,
+        cart_api_1.CartApi,
+        category_api_1.CategoryApi])
 ], ElectronicsApp);
 exports.ElectronicsApp = ElectronicsApp;
 //# sourceMappingURL=server.js.map

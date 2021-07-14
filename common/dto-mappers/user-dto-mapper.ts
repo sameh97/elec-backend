@@ -1,7 +1,7 @@
 import { AppUtils } from "../app-utils";
 import { injectable } from "inversify";
 import { User } from "../../common/interfaces/user";
-import { UserDto } from "../../common/interfaces/user-dto";
+import { UserDto } from "../interfaces/dto/user-dto";
 
 @injectable()
 export class UserDtoMapper {

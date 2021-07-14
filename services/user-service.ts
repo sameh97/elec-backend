@@ -5,6 +5,7 @@ import { UsersRepository } from "../repositories/user-repository";
 import { PasswordManagerService } from "./password-manager-service";
 import { AppDBConnection } from "../config/database";
 import { AppUtils } from "../common/app-utils";
+import * as jwt from "jsonwebtoken";
 
 @injectable()
 export class UserService {
@@ -18,7 +19,7 @@ export class UserService {
     @inject(AppDBConnection) private appDBconnection: AppDBConnection
   ) {}
 
-  public async login(email: string, password: string): Promise<User> {
+  public async login(email: string, password: string): Promise<string> {
     const userInDB = await this.usersRepository.getByEmail(email);
 
     const isPasswordOk = await this.passwordManager.isEqual(
@@ -29,7 +30,15 @@ export class UserService {
       throw new AuthenticationError(`User with ${email} not authenticated`);
     }
 
-    return userInDB;
+    const token = jwt.sign(
+      {
+        sub: userInDB,
+      },
+      UserService.TOKEN_SECRET,
+      { expiresIn: `${UserService.TOKEN_EXPIRATION_HOURS}h` }
+    );
+
+    return token;
   }
 
   public async create(user: User): Promise<User> {

@@ -37,6 +37,14 @@ export class ProductsService {
     return products;
   };
 
+  public getById = async (id: string): Promise<Product> => {
+    const product: Product = await this.productRepo.getProductById(id);
+    // this.logger.info(
+    //   `Returning product with serial number ${product.serialNumber}`
+    // );
+    return product;
+  };
+
   public update = async (product: Product): Promise<Product> => {
     try {
       const updatedProduct = await this.productRepo.update(product);
@@ -55,10 +63,6 @@ export class ProductsService {
   };
 
   public delete = async (id: string): Promise<void> => {
-    // if (!AppUtils.isInteger(id)) {
-    //   throw new InputError(`Cannot delete product, the id must be an integer`);
-    // }
-
     try {
       this.logger.info(`Deleting product with id: ${id}`);
 
