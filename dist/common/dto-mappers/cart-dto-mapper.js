@@ -36,14 +36,18 @@ let CartDtoMapper = class CartDtoMapper {
             }
             console.log(cart);
             let cartItems = [];
+            const allProducts = yield this.productsService.getAll();
             for (let item of cart.items) {
-                const product = yield this.productsService.getById(item.productID);
-                const cartItemToSave = {
-                    _id: item._id,
-                    product: product,
-                    quantity: item.quantity,
-                };
-                cartItems.push(cartItemToSave);
+                for (let product of allProducts) {
+                    if (item.productID == product._id) {
+                        const cartItemToSave = {
+                            _id: item._id,
+                            product: product,
+                            quantity: item.quantity,
+                        };
+                        cartItems.push(cartItemToSave);
+                    }
+                }
             }
             return {
                 _id: cart._id,

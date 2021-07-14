@@ -21,7 +21,23 @@ export class CartDtoMapper {
 
     let cartItems: CartItemDto[] = [];
 
-    // await cart.items.forEach(async (item) => {
+    const allProducts: Product[] = await this.productsService.getAll();
+
+    for (let item of cart.items) {
+      for (let product of allProducts) {
+        if (item.productID == product._id) {
+          const cartItemToSave: CartItemDto = {
+            _id: item._id,
+            product: product,
+            quantity: item.quantity,
+          } as CartItemDto;
+
+          cartItems.push(cartItemToSave);
+        }
+      }
+    }
+
+    // for (let item of cart.items) {
     //   const product: Product = await this.productsService.getById(
     //     item.productID
     //   );
@@ -32,20 +48,7 @@ export class CartDtoMapper {
     //   } as CartItemDto;
 
     //   cartItems.push(cartItemToSave);
-    // });
-
-    for (let item of cart.items) {
-      const product: Product = await this.productsService.getById(
-        item.productID
-      );
-      const cartItemToSave: CartItemDto = {
-        _id: item._id,
-        product: product,
-        quantity: item.quantity,
-      } as CartItemDto;
-
-      cartItems.push(cartItemToSave);
-    }
+    // }
 
     return {
       _id: cart._id,

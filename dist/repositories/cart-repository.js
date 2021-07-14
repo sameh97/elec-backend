@@ -24,6 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartRepository = void 0;
 const inversify_1 = require("inversify");
 const app_utils_1 = require("../common/app-utils");
+const not_found_error_1 = require("../exeptions/not-found-error");
 const logger_1 = require("../common/logger");
 const CartModel = require("./../models/cart");
 let CartRepository = class CartRepository {
@@ -57,6 +58,23 @@ let CartRepository = class CartRepository {
                 yield createdCart.save();
                 return createdCart;
             }
+        });
+        this.delete = (id) => __awaiter(this, void 0, void 0, function* () {
+            let toDelete = null;
+            yield CartModel.findOne({ userID: id }, (err, cart) => {
+                toDelete = cart;
+            });
+            if (!app_utils_1.AppUtils.hasValue(toDelete)) {
+                throw new not_found_error_1.NotFoundErr(`Cannot delete Cart for user with id ${id} because its not found`);
+            }
+            yield CartModel.remove({ userID: id }, (err, removedCart) => {
+                if (err) {
+                    this.logger.error(err);
+                }
+                else {
+                    console.log("Removed Cart : ", removedCart);
+                }
+            });
         });
     }
     getCartByUserId(user_id) {

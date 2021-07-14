@@ -4,7 +4,7 @@ import { Product } from "./../common/interfaces/product-interface";
 
 const productSchema = new Schema<Product>({
   name: { type: String, required: true },
-  serialNumber: { type: String, required: true, unique: true },
+  serialNumber: { type: String, required: true },
   description: { type: String, required: true },
   quantity: { type: String, required: true },
   status: { type: String, required: true },

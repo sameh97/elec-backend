@@ -21,6 +21,6 @@ export class CartApi implements AppRoute {
     this.router.post("/add-to-cart", this.cartController.addToCart);
     this.router.get("/cart", this.cartController.getCartByUserId);
     // this.router.put("/update", this.productsController.update);
-    // this.router.delete("/delete/:id", this.productsController.delete);
+    this.router.delete("/cart/delete", this.cartController.delete);
   }
 }

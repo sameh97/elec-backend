@@ -28,6 +28,7 @@ let CartApi = class CartApi {
         this.router = express_1.Router();
         this.router.post("/add-to-cart", this.cartController.addToCart);
         this.router.get("/cart", this.cartController.getCartByUserId);
+        this.router.delete("/cart/delete", this.cartController.delete);
     }
 };
 CartApi = __decorate([

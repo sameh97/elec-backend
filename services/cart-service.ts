@@ -58,19 +58,15 @@ export class CartService {
   //     }
   //   };
 
-  //   public delete = async (id: string): Promise<void> => {
-  //     // if (!AppUtils.isInteger(id)) {
-  //     //   throw new InputError(`Cannot delete product, the id must be an integer`);
-  //     // }
+  public delete = async (id: string): Promise<void> => {
+    try {
+      this.logger.info(`Deleting cart with id: ${id}`);
 
-  //     try {
-  //       this.logger.info(`Deleting product with id: ${id}`);
+      await this.cartRepository.delete(id);
 
-  //       await this.productRepo.delete(id);
-
-  //       this.logger.info(`Product with id ${id} has been deleted.`);
-  //     } catch (err) {
-  //       throw err;
-  //     }
-  //   };
+      this.logger.info(`Cart with id ${id} has been deleted.`);
+    } catch (err) {
+      throw err;
+    }
+  };
 }

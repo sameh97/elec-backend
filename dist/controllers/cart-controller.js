@@ -57,6 +57,18 @@ let CartController = class CartController {
                 next(err);
             }
         });
+        this.delete = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            let cartId = null;
+            try {
+                cartId = req.query.user_id;
+                yield this.cartService.delete(cartId);
+                next(`Cart with id ${cartId} has been deleted successfully`);
+            }
+            catch (err) {
+                this.logger.error(`Cannot delete product: ${cartId}`, err);
+                next(err);
+            }
+        });
     }
 };
 CartController = __decorate([

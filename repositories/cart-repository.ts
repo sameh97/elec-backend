@@ -6,12 +6,13 @@ import { Logger } from "../common/logger";
 import { Cart } from "../common/interfaces/cart-interface";
 import { CartItem } from "../common/interfaces/cart-item-interface";
 import { CartDtoMapper } from "../common/dto-mappers/cart-dto-mapper";
+import { AppDBConnection } from "../config/database";
 const CartModel = require("./../models/cart");
 
 @injectable()
 export class CartRepository {
   constructor(
-    @inject(Logger) private logger: Logger // @inject(CartDtoMapper) private cartDtoMapper: CartDtoMapper
+    @inject(Logger) private logger: Logger // @inject(CartDtoMapper) private cartDtoMapper: CartDtoMapper,
   ) {}
 
   public add = async (cartItem: CartItem, userID: string): Promise<Cart> => {
@@ -116,25 +117,33 @@ export class CartRepository {
   // };
 
   //   // TODO: check how to bring the id:
-  //   public delete = async (id: string) => {
-  //     let toDelete: Product = null;
+  public delete = async (id: string) => {
+    let toDelete: Cart = null;
 
-  //     await ProductModel.findOne({ _id: id }, (err, product) => {
-  //       toDelete = product;
-  //     });
+    await CartModel.findOne({ userID: id }, (err, cart) => {
+      toDelete = cart;
+    });
 
-  //     if (!AppUtils.hasValue(toDelete)) {
-  //       throw new NotFoundErr(
-  //         `Cannot delete Product with id ${id} because its not found`
-  //       );
-  //     }
+    if (!AppUtils.hasValue(toDelete)) {
+      throw new NotFoundErr(
+        `Cannot delete Cart for user with id ${id} because its not found`
+      );
+    }
 
-  //     await ProductModel.findByIdAndRemove(id, (err, removedProduct) => {
-  //       if (err) {
-  //         this.logger.error(err);
-  //       } else {
-  //         console.log("Removed User : ", removedProduct);
-  //       }
-  //     });
-  //   };
+    // await CartModel.findByIdAndRemove(id, (err, removedCart) => {
+    //   if (err) {
+    //     this.logger.error(err);
+    //   } else {
+    //     console.log("Removed Cart : ", removedCart);
+    //   }
+    // });
+
+    await CartModel.remove({ userID: id }, (err, removedCart) => {
+      if (err) {
+        this.logger.error(err);
+      } else {
+        console.log("Removed Cart : ", removedCart);
+      }
+    });
+  };
 }

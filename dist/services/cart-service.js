@@ -46,6 +46,16 @@ let CartService = class CartService {
             const cart = yield this.cartRepository.getCartByUserId(user_id);
             return cart;
         });
+        this.delete = (id) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                this.logger.info(`Deleting cart with id: ${id}`);
+                yield this.cartRepository.delete(id);
+                this.logger.info(`Cart with id ${id} has been deleted.`);
+            }
+            catch (err) {
+                throw err;
+            }
+        });
     }
 };
 CartService = __decorate([

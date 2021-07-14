@@ -28,12 +28,6 @@ export class UsersRepository {
 
     await createdUser.save();
 
-    // let createdUser: User = null;
-
-    // await UserModel.create(user, (error, data) => {
-    //   createdUser = data;
-    // });
-
     return createdUser;
   }
 

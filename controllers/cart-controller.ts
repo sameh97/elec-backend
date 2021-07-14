@@ -87,17 +87,17 @@ export class CartController {
   //     }
   //   };
 
-  //   public delete = async (req: any, res: any, next: any) => {
-  //     let productId: string = null;
-  //     try {
-  //       productId = req.params.id;
+  public delete = async (req: any, res: any, next: any) => {
+    let cartId: string = null;
+    try {
+      cartId = req.query.user_id;
 
-  //       await this.productsService.delete(productId);
+      await this.cartService.delete(cartId);
 
-  //       next(`product with id ${productId} has been deleted successfully`);
-  //     } catch (err) {
-  //       this.logger.error(`Cannot delete product: ${productId}`, err);
-  //       next(err);
-  //     }
-  //   };
+      next(`Cart with id ${cartId} has been deleted successfully`);
+    } catch (err) {
+      this.logger.error(`Cannot delete product: ${cartId}`, err);
+      next(err);
+    }
+  };
 }
