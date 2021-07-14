@@ -18,21 +18,6 @@ export class CartController {
     @inject(Logger) private logger: Logger
   ) {}
 
-  //   public getAll = async (req: any, res: any, next: any) => {
-  //     try {
-  //       const products: Product[] = await this.productsService.getAll();
-
-  //       const productDto: ProductDto[] = products.map((product) =>
-  //         this.productDtoMapper.asDto(product)
-  //       );
-
-  //       next(productDto);
-  //     } catch (err) {
-  //       this.logger.error(`cannot get all products`, err);
-  //       next(err);
-  //     }
-  //   };
-
   public getCartByUserId = async (req: any, res: any, next: any) => {
     try {
       const cart: Cart = await this.cartService.getCartById(req.query.user_id);
@@ -65,27 +50,6 @@ export class CartController {
       next(err);
     }
   };
-
-  //   public update = async (req: any, res: any, next: any) => {
-  //     let productToUpdate: Product = null;
-  //     try {
-  //       productToUpdate = this.productDtoMapper.asEntity(req.body);
-
-  //       const updatedProduct: Product = await this.productsService.update(
-  //         productToUpdate
-  //       );
-
-  //       res.status(201);
-
-  //       next(this.productDtoMapper.asDto(updatedProduct));
-  //     } catch (err) {
-  //       this.logger.error(
-  //         `Cannot update product ${JSON.stringify(req.body)}`,
-  //         err
-  //       );
-  //       next(err);
-  //     }
-  //   };
 
   public delete = async (req: any, res: any, next: any) => {
     let cartId: string = null;

@@ -73,7 +73,9 @@ let ElectronicsApp = class ElectronicsApp {
         this.app.use("/api", this.productsApi.getRouter());
         this.app.use("/api", this.cartApi.getRouter());
         this.app.use("/api", this.categoryApi.getRouter());
-        const publicPath = express.static(path.join(__dirname, "./../elec"), { redirect: false });
+        const publicPath = express.static(path.join(__dirname, "./../elec"), {
+            redirect: false,
+        });
         this.app.use(publicPath);
         this.app.get("/*", (req, res) => {
             res.sendFile(path.join(__dirname, "./../elec/index.html"));

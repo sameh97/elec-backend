@@ -63,10 +63,6 @@ export class ProductsService {
   };
 
   public delete = async (id: string): Promise<void> => {
-    // if (!AppUtils.isInteger(id)) {
-    //   throw new InputError(`Cannot delete product, the id must be an integer`);
-    // }
-
     try {
       this.logger.info(`Deleting product with id: ${id}`);
 

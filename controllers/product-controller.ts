@@ -28,21 +28,6 @@ export class ProductsController {
     }
   };
 
-  // public getbyId = async (req: any, res: any, next: any) => {
-  //   try {
-  //     const products: Product = await this.productsService.getById(req.params);
-
-  //     const productDto: ProductDto[] = products.map((product) =>
-  //       this.productDtoMapper.asDto(product)
-  //     );
-
-  //     next(productDto);
-  //   } catch (err) {
-  //     this.logger.error(`cannot get all products`, err);
-  //     next(err);
-  //   }
-  // };
-
   public createProduct = async (req: any, res: any, next: any) => {
     let productToCreate: Product = null;
     try {

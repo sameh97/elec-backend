@@ -19,10 +19,6 @@ export class CategoryController {
     try {
       const categorys: Category[] = await this.categoryService.getAll();
 
-      //   const productDto: ProductDto[] = categorys.map((product) =>
-      //     this.productDtoMapper.asDto(product)
-      //   );
-
       next(categorys);
     } catch (err) {
       this.logger.error(`cannot get all categorys`, err);
@@ -33,8 +29,6 @@ export class CategoryController {
   public create = async (req: any, res: any, next: any) => {
     let categoryToCreate: Category = null;
     try {
-      // categoryToCreate = this.productDtoMapper.asEntity(req.body);
-
       categoryToCreate = req.body as Category;
 
       const createdCategory: Category = await this.categoryService.create(
@@ -43,7 +37,6 @@ export class CategoryController {
 
       res.status(201);
 
-      //   next(this.productDtoMapper.asDto(createdProduct));
       next(createdCategory);
     } catch (err) {
       this.logger.error(
@@ -57,8 +50,6 @@ export class CategoryController {
   public update = async (req: any, res: any, next: any) => {
     let categoryToUpdate: Category = null;
     try {
-      //   categoryToUpdate = this.productDtoMapper.asEntity(req.body);
-
       categoryToUpdate = req.body as Category;
 
       const updatedCategory: Category = await this.categoryService.update(
@@ -66,8 +57,6 @@ export class CategoryController {
       );
 
       res.status(201);
-
-      //   next(this.productDtoMapper.asDto(updatedProduct));
 
       next(updatedCategory);
     } catch (err) {

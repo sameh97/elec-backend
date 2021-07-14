@@ -37,35 +37,10 @@ export class CartDtoMapper {
       }
     }
 
-    // for (let item of cart.items) {
-    //   const product: Product = await this.productsService.getById(
-    //     item.productID
-    //   );
-    //   const cartItemToSave: CartItemDto = {
-    //     _id: item._id,
-    //     product: product,
-    //     quantity: item.quantity,
-    //   } as CartItemDto;
-
-    //   cartItems.push(cartItemToSave);
-    // }
-
     return {
       _id: cart._id,
       items: cartItems,
       userID: cart.userID,
     } as CartDto;
   }
-
-  // public asEntity(cartDto: CartDto): Cart {
-  //   if (!AppUtils.hasValue(cartDto)) {
-  //     return null;
-  //   }
-
-  //   return {
-  //     _id: cartDto._id,
-  //     items: cartDto.items,
-  //     userID: cartDto.userID,
-  //   } as Cart;
-  // }
 }

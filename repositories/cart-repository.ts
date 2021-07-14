@@ -30,7 +30,6 @@ export class CartRepository {
       if (index !== -1) {
         cartInDB.items[index].quantity =
           cartInDB.items[index].quantity + cartItem.quantity;
-        // cartInDB.items[index].product._id = cartItem.product._id;
 
         const cartAfterAdding = await cartInDB.save();
 
@@ -68,54 +67,6 @@ export class CartRepository {
     return cart;
   }
 
-  // public async getAll(): Promise<Product[]> {
-  //   let allProducts: Product[] = [];
-
-  //   await ProductModel.find({}, (err, data) => {
-  //     allProducts = data as Product[];
-  //   });
-
-  //   return allProducts;
-  // }
-
-  // public update = async (
-  //   cartIem: CartItem,
-  //   userID: string
-  // ): Promise<Product> => {
-  //   let cartInDB: Cart = null;
-
-  //   await CartModel.findOne({ userID: userID }, (err, cart) => {
-  //     cartInDB = cart as Cart;
-  //   });
-
-  //   if (!AppUtils.hasValue(cartInDB)) {
-  //     throw new NotFoundErr(
-  //       `Cannot update Cart for user ${userID} because its not found`
-  //     );
-  //   }
-
-  //   this.logger.info(`Updating Cart for user ${userID}`);
-
-  //   let updatedCart: Cart = null;
-
-  //   await CartModel.findByIdAndUpdate(
-  //     cartIem._id,
-  //     product,
-  //     { new: true },
-  //     (err, updatedProductInDB) => {
-  //       if (err) {
-  //         this.logger.error(err);
-  //       } else {
-  //         updatedProduct = updatedProductInDB as Product;
-  //       }
-  //     }
-  //   );
-
-  //   this.logger.info(`updated product ${JSON.stringify(updatedProduct)}`);
-
-  //   return updatedProduct;
-  // };
-
   //   // TODO: check how to bring the id:
   public delete = async (id: string) => {
     let toDelete: Cart = null;
@@ -129,14 +80,6 @@ export class CartRepository {
         `Cannot delete Cart for user with id ${id} because its not found`
       );
     }
-
-    // await CartModel.findByIdAndRemove(id, (err, removedCart) => {
-    //   if (err) {
-    //     this.logger.error(err);
-    //   } else {
-    //     console.log("Removed Cart : ", removedCart);
-    //   }
-    // });
 
     await CartModel.remove({ userID: id }, (err, removedCart) => {
       if (err) {

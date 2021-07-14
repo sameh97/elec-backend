@@ -35,29 +35,6 @@ export class CartService {
     return cart;
   };
 
-  // public getAll = async (): Promise<Product[]> => {
-  //   const products: Product[] = await this.productRepo.getAll();
-  //   this.logger.info(`Returning ${products.length} products`);
-  //   return products;
-  // };
-
-  //   public update = async (product: Product): Promise<Product> => {
-  //     try {
-  //       const updatedProduct = await this.productRepo.update(product);
-
-  //       this.logger.info(`updated product with id ${updatedProduct._id}`);
-
-  //       return updatedProduct;
-  //     } catch (err) {
-  //       this.logger.error(
-  //         `Error occurred while updating product: error: ${AppUtils.getFullException(
-  //           err
-  //         )}`
-  //       );
-  //       throw err;
-  //     }
-  //   };
-
   public delete = async (id: string): Promise<void> => {
     try {
       this.logger.info(`Deleting cart with id: ${id}`);
